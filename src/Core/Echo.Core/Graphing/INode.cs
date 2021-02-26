@@ -39,13 +39,13 @@ namespace Echo.Core.Graphing
         /// Gets a collection of nodes that precede this node.
         /// </summary>
         /// <returns>The predecessor nodes.</returns>
-        IEnumerable<INode> GetPredecessors();
+        public IEnumerable<INode> GetPredecessors();
 
         /// <summary>
         /// Gets a collection of nodes that can be reached from this node by following one of the incident edges.
         /// </summary>
         /// <returns>The successor nodes.</returns>
-        IEnumerable<INode> GetSuccessors();
+        public IEnumerable<INode> GetSuccessors();
 
         /// <summary>
         /// Determines whether the provided node precedes the current node. 
