@@ -90,7 +90,23 @@ namespace Echo.DataFlow
 
         IEnumerable<IEdge> INode.GetIncomingEdges()
         {
-            throw new NotImplementedException();
+            foreach (var dependant in Dependants)
+            {
+                //if this is a stack dep 
+                if (dependant.StackDependencies.Any(x => x.Select(x => x.Node).Contains(this)))
+                {
+                    var index = dependant.StackDependencies.IndexOf(
+                        dependant.StackDependencies.First(x => x.Select(y => y.Node).Contains(this)));
+                    yield return new DataFlowEdge<TContents>(dependant, this, DataDependencyType.Stack, index);
+                }
+                //if this is a variable dep
+                else
+                {
+                    var dependency =
+                        dependant.VariableDependencies.First(x => x.Value.Select(y => y.Node).Contains(this));
+                    yield return new DataFlowEdge<TContents>(dependant, this, DataDependencyType.Variable, dependency.Key);
+                }
+            }
         }
 
         IEnumerable<IEdge> INode.GetOutgoingEdges()
